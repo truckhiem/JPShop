@@ -97,7 +97,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         List<Model> Models = new ArrayList<Model>();
 
         Cursor cursor =  getDatabase(mContext).query(TABLE,
-                allColumns, null, null, null, null, null);
+                allColumns, null, null, null, null, COL_DATE + " ASC");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {

@@ -26,6 +26,10 @@ public class TabViewAdapter extends FragmentStatePagerAdapter {
         this.mLstModel = mLstModel;
     }
 
+    public void setListModel(List<List<Model>> mLstModel){
+        this.mLstModel = mLstModel;
+    }
+
     @Override
     public Fragment getItem(int i) {
         Fragment fragment = new FragmentProduct(mLstModel.get(i), mContext);
@@ -46,7 +50,7 @@ public class TabViewAdapter extends FragmentStatePagerAdapter {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(mLstModel.get(position).get(0).getTimeInMillis());
 
-        return cal.get(Calendar.DAY_OF_MONTH)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR);
+        return cal.get(Calendar.DAY_OF_MONTH)+"-"+(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.YEAR);
     }
 
 }

@@ -49,18 +49,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initPager() {
-        mViewPager.removeAllViews();
-        mTabViewAdapter =new TabViewAdapter(getSupportFragmentManager(), this, mLstModel);
-        mViewPager.setAdapter(mTabViewAdapter);
-        if(mViewPager.getAdapter().getCount() >= 2) {
-            mViewPager.setCurrentItem(1);
-            mViewPager.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mViewPager.setCurrentItem(0);
-                }
-            }, 100);
+        if(mTabViewAdapter != null){
+            mTabViewAdapter.setListModel(mLstModel);
+            mTabViewAdapter.notifyDataSetChanged();
+        }else {
+            mTabViewAdapter = new TabViewAdapter(getSupportFragmentManager(), this, mLstModel);
+            mViewPager.setAdapter(mTabViewAdapter);
         }
+
+        mViewPager.setCurrentItem(0);
+        mViewPager.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mViewPager.setCurrentItem(mViewPager.getAdapter().getCount());
+            }
+        }, 100);
     }
 
     private void initScannerBtn() {
@@ -111,10 +114,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadData() {
+        mLstModel = new ArrayList<>();
         List<Model> mLstModelAll = SQLiteHelper.getInstance(mContext).getAllModels();
         List<Model> mLstModeByDate = new ArrayList<>();
         if(mLstModelAll.size() <= 0) {
-            mViewPager.setVisibility(View.GONE);
+            fakeData();
+            loadData();
             return;
         }
         int crtDate = mLstModelAll.get(0).getDate();
